@@ -1,4 +1,4 @@
-streamlit
-matplotlib
-pandas
-openpyxl
+streamlit==1.45.1
+matplotlib==3.10.3
+pandas==2.3.0
+openpyxl==3.1.5
