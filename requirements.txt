@@ -1,4 +1,5 @@
 transformers==4.40.0
+tokenizers==0.13.3
 langchain==0.3.25
 langchainhub==0.1.21
 langchain-chroma==0.2.3
