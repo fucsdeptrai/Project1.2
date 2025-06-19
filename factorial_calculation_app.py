@@ -60,7 +60,7 @@ def factorial_calculator():
     
     if st.button("Tính giai thừa"):
         result = fact(number)
-        st.write(f"Gia thừa của {number} là {result}")
+        st.write(f"Giai thừa của {number} là {result}")
 
 def greeting_page():
     """Trang chào hỏi cho user không hợp lệ"""
