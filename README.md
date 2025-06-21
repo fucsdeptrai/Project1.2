@@ -8,7 +8,7 @@
 **Giao diện sử dụng**
 1. Giao diện RAG - Hệ thống hỏi đáp
    rag_app.py
-   <img width="1305" alt="Screenshot 2025-06-20 at 23 44 47" src="https://github.com/user-attachments/assets/a87f5d4e-6a07-42c4-9df3-350fb50896a2" />
+   <img width="908" alt="Picture1" src="https://github.com/user-attachments/assets/c2285c45-8d9a-430a-a905-722afc662b33" />
 
 3. Giao diện RAG Chatbot - Hệ thống hỏi đáp (Sử dụng khung chat)
    rag_chatbot_app.py
