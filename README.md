@@ -4,6 +4,9 @@
 1. Công cụ sử dụng: LangChain
 2. Mô hình ngôn ngữ lớn (LLMs - Large Language Model): Vicuna-7B
 3. Sử dụng semantic chunking
+
+![Uploading Screenshot 2025-06-21 at 06.58.58.png…]()
+
    
 * Chạy ứng dụng trên server:
 
