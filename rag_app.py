@@ -11,7 +11,7 @@ from langchain import hub
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
-# from transformers import BitsAndBytesConfig
+from transformers import BitsAndBytesConfig
 
 # Session state initialization
 if 'rag_chain' not in st.session_state:
@@ -32,49 +32,49 @@ def load_embeddings():
 def load_llm():
     MODEL_NAME = "lmsys/vicuna-7b-v1.5"
 
-    # bnb_config = BitsAndBytesConfig(
-    #     load_in_4bit=True,  # Hoặc load_in_8bit=True
-    #     bnb_4bit_use_double_quant=True,
-    #     bnb_4bit_compute_dtype=torch.bfloat16,
-    #     bnb_4bit_quant_type="nf4"  # nf4 là lựa chọn tốt cho mô hình lớn
-    # )
+    bnb_config = BitsAndBytesConfig(
+        load_in_4bit=True,  # Hoặc load_in_8bit=True
+        bnb_4bit_use_double_quant=True,
+        bnb_4bit_compute_dtype=torch.bfloat16,
+        bnb_4bit_quant_type="nf4"  # nf4 là lựa chọn tốt cho mô hình lớn
+    )
 
-    # # Load model với quantization
-    # model = AutoModelForCausalLM.from_pretrained(
-    #     MODEL_NAME,
-    #     quantization_config=bnb_config,
-    #     device_map="auto"
-    # )
-
-    # tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
-
-    # model_pipeline = pipeline(
-    #     "text-generation",
-    #     model=model,
-    #     tokenizer=tokenizer,
-    #     max_new_tokens=512,
-    #     pad_token_id=tokenizer.eos_token_id,
-    #     device_map="auto"
-    # )
-
+    # Load model với quantization
     model = AutoModelForCausalLM.from_pretrained(
         MODEL_NAME,
-        torch_dtype=torch.float16,  # hoặc torch.float16 nếu muốn tiết kiệm memory
-        low_cpu_mem_usage=True,
-        device_map="cpu"  # Explicitly set to CPU
+        quantization_config=bnb_config,
+        device_map="auto"
     )
-    
+
     tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
-    
-    # Create pipeline with CPU device
+
     model_pipeline = pipeline(
         "text-generation",
         model=model,
         tokenizer=tokenizer,
         max_new_tokens=512,
         pad_token_id=tokenizer.eos_token_id,
-        device="cpu"  # Explicitly set device to CPU
+        device_map="auto"
     )
+
+    # model = AutoModelForCausalLM.from_pretrained(
+    #     MODEL_NAME,
+    #     torch_dtype=torch.float16,  # hoặc torch.float16 nếu muốn tiết kiệm memory
+    #     low_cpu_mem_usage=True,
+    #     device_map="cpu"  # Explicitly set to CPU
+    # )
+    
+    # tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+    
+    # # Create pipeline with CPU device
+    # model_pipeline = pipeline(
+    #     "text-generation",
+    #     model=model,
+    #     tokenizer=tokenizer,
+    #     max_new_tokens=512,
+    #     pad_token_id=tokenizer.eos_token_id,
+    #     device="cpu"  # Explicitly set device to CPU
+    # )
     
     return HuggingFacePipeline(pipeline=model_pipeline)
 
