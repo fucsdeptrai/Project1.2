@@ -3,6 +3,7 @@ from tools.get_subtiltes import get_subtitles
 from langchain_core.documents import Document
 from langchain_experimental.text_splitter import SemanticChunker
 from langchain_chroma import Chroma
+from chromadb.config import Settings
 from langchain import hub
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
@@ -40,9 +41,12 @@ def process_subtitle(video_url: str, language: list, history_folder: str, max_hi
     subs = semantic_splitter.split_documents(docs)
     
     # 4. Create a Chroma vector database and retriever
-    vector_db = Chroma.from_documents(documents=subs, embedding=st.session_state.embeddings)
+    vector_db = Chroma.from_documents(documents=subs, embedding=st.session_state.embeddings, client_settings=Settings(
+        chroma_db_impl="duckdb+parquet",
+        persist_directory=None  # disables persistence, avoids sqlite
+    ))
     retriever = vector_db.as_retriever()
-    
+
     # 5. Define the RAG prompt and chain
     prompt = hub.pull("rlm/rag-prompt")  
     question_to_string = RunnableLambda(lambda x: x["question"])
