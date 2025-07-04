@@ -5,6 +5,8 @@ from src.base.llm_model import get_llm
 from langchain_huggingface import HuggingFaceEmbeddings
 import os
 
+os.environ["OTEL_SDK_DISABLED"] = "true"
+os.environ["GRPC_VERBOSITY"] = "ERROR"
 os.environ["LANGCHAIN_TRACING_V2"] = "false"
 os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = "python"
 
