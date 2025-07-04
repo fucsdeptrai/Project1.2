@@ -3,6 +3,9 @@ import uuid
 from src.chat.rag import process_subtitle
 from src.base.llm_model import get_llm
 from langchain_huggingface import HuggingFaceEmbeddings
+import os
+
+os.environ["LANGCHAIN_TRACING_V2"] = "false"
 
 # --- Session State Setup ---
 if "rag_chain" not in st.session_state:
