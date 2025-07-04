@@ -10,6 +10,7 @@ from langchain_core.runnables import RunnableLambda
 from tools.get_subtiltes import get_subtitles
 from src.chat.history import create_session_factory
 from tools.output_parser import format_docs
+import sqlite3
 
 import streamlit as st
 
