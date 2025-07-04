@@ -1,4 +1,3 @@
-%%writefile app.py
 import streamlit as st
 import torch
 from urllib.parse import urlparse, parse_qs
