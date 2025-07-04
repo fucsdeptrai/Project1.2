@@ -2,8 +2,6 @@
 from tools.get_subtiltes import get_subtitles
 from langchain_core.documents import Document
 from langchain_experimental.text_splitter import SemanticChunker
-from langchain_chroma import Chroma
-from chromadb.config import Settings
 from langchain import hub
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
@@ -19,6 +17,8 @@ def process_subtitle(video_url: str, language: list, history_folder: str, max_hi
     """
     Processes subtitles to create a RAG chain for Q&A.
     """
+    from langchain_chroma import Chroma
+    from chromadb.config import Settings
     subtitles_text = get_subtitles(video_url, language)
     if not subtitles_text:
         return None, 0
