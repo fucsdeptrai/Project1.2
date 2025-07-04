@@ -40,7 +40,7 @@ def clear_chat():
 
 def display_chat():
     if not st.session_state.chat_history:
-        add_message("assistant", "👋 Xin chào! Dán link YouTube và đặt câu hỏi về nội dung video nhé.")
+        add_message("assistant", "Xin chào! Dán link YouTube và đặt câu hỏi về nội dung video nhé.")
     for message in st.session_state.chat_history:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
@@ -48,7 +48,7 @@ def display_chat():
 # --- Main App ---
 def main():
     st.set_page_config(page_title="YouTube RAG Chatbot", layout="wide", initial_sidebar_state="expanded")
-    st.title("🎬 YouTube RAG Assistant 💬")
+    st.title("YouTube RAG Assistant")
 
     # --- Sidebar ---
     with st.sidebar:
@@ -59,18 +59,18 @@ def main():
                 st.session_state.embeddings = load_embeddings()
                 st.session_state.llm = load_llm_model()
                 st.session_state.models_loaded = True
-            st.success("✅ Mô hình đã sẵn sàng!")
+            st.success("Mô hình đã sẵn sàng!")
             st.rerun()
         else:
-            st.success("✅ Mô hình đã tải")
+            st.success("Mô hình đã tải")
 
         st.markdown("---")
 
-        st.subheader("📺 Nhập URL Video")
+        st.subheader("Nhập URL Video")
         youtube_url = st.text_input("Dán link YouTube", placeholder="https://www.youtube.com/watch?v=...")
         langs = st.multiselect("Chọn phụ đề", ["vi", "en"], default=["vi", "en"])
 
-        if st.button("🚀 Xử lý Video", use_container_width=True, disabled=not youtube_url):
+        if st.button("Xử lý Video", use_container_width=True, disabled=not youtube_url):
             with st.spinner("Đang xử lý phụ đề..."):
                 chain, num_chunks = process_subtitle(youtube_url, langs, history_folder="chat_history", max_history_length=20)
                 if chain:
@@ -78,22 +78,22 @@ def main():
                     st.session_state.video_processed = True
                     st.session_state.video_info = youtube_url
                     clear_chat()
-                    add_message("assistant", f"🎉 Video được xử lý! 📄 Có {num_chunks} đoạn phụ đề.\n\nBắt đầu đặt câu hỏi phía dưới 👇")
+                    add_message("assistant", f"Video được xử lý! Có {num_chunks} đoạn phụ đề.\n\nBắt đầu đặt câu hỏi phía dưới 👇")
                     st.rerun()
 
         st.markdown("---")
         if st.session_state.video_processed:
-            st.success("🎥 Video đã được phân tích")
+            st.success("Video đã được phân tích")
             st.caption(st.session_state.video_info)
         else:
-            st.info("📭 Chưa có video được xử lý")
+            st.info("Chưa có video được xử lý")
 
-        st.subheader("💬 Quản lý Chat")
-        if st.button("🧹 Xóa lịch sử", use_container_width=True):
+        st.subheader("Quản lý Chat")
+        if st.button("Xóa lịch sử", use_container_width=True):
             clear_chat()
             st.rerun()
 
-        st.subheader("📘 Hướng dẫn")
+        st.subheader("Hướng dẫn")
         st.markdown("""
         **Cách sử dụng:**
         1. Dán URL YouTube ở trên và nhấn **Xử lý Video**.
@@ -102,7 +102,7 @@ def main():
         """)
 
     # --- Main Chat Panel ---
-    st.markdown("### 💬 Chat")
+    st.markdown("### Chat")
     display_chat()
 
     # Input box
@@ -114,7 +114,7 @@ def main():
     if st.session_state.chat_history and st.session_state.chat_history[-1]["role"] == "user":
         question = st.session_state.chat_history[-1]["content"]
         with st.chat_message("assistant"):
-            with st.spinner("🤖 Đang suy nghĩ..."):
+            with st.spinner("Đang suy nghĩ..."):
                 try:
                     output = st.session_state.rag_chain.invoke(
                         {"question": question},
@@ -127,7 +127,7 @@ def main():
                     st.markdown(answer)
                     add_message("assistant", answer)
                 except Exception as e:
-                    err_msg = f"❌ Lỗi khi xử lý: {str(e)}"
+                    err_msg = f"Lỗi khi xử lý: {str(e)}"
                     st.error(err_msg)
                     add_message("assistant", err_msg)
 

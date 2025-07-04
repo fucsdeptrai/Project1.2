@@ -1,5 +1,5 @@
 
-from src.tools.get_subtiltes import get_subtitles
+from tools.get_subtiltes import get_subtitles
 from langchain_core.documents import Document
 from langchain_experimental.text_splitter import SemanticChunker
 from langchain_chroma import Chroma
@@ -8,9 +8,9 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_core.runnables import RunnableLambda
-from src.tools.get_subtiltes import get_subtitles
+from tools.get_subtiltes import get_subtitles
 from src.chat.history import create_session_factory
-from src.tools.output_parser import format_docs
+from tools.output_parser import format_docs
 
 import streamlit as st
 
