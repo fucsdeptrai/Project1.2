@@ -2,6 +2,7 @@ import streamlit as st
 import tempfile
 import os
 import torch
+from get_subtiltes import get_subtitles
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_huggingface.embeddings import HuggingFaceEmbeddings
 from langchain_experimental.text_splitter import SemanticChunker
