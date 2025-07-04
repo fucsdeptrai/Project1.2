@@ -6,6 +6,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 import os
 
 os.environ["LANGCHAIN_TRACING_V2"] = "false"
+os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = "python"
 
 # --- Session State Setup ---
 if "rag_chain" not in st.session_state:
