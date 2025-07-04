@@ -79,13 +79,8 @@ def load_llm():
     
     return HuggingFacePipeline(pipeline=model_pipeline)
 
-def process_pdf(uploaded_file):
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_file:
-        tmp_file.write(uploaded_file.getvalue())
-        tmp_file_path = tmp_file.name
-    
-    loader = PyPDFLoader(tmp_file_path)
-    documents = loader.load()
+def process_subtitle(video_url, language=['vi', 'en']):
+    subtitles = get_subtitles(video_url, language)
     
     semantic_splitter = SemanticChunker(
         embeddings=st.session_state.embeddings,
@@ -96,8 +91,8 @@ def process_pdf(uploaded_file):
         add_start_index=True
     )
     
-    docs = semantic_splitter.split_documents(documents)
-    vector_db = Chroma.from_documents(documents=docs, embedding=st.session_state.embeddings)
+    subs = semantic_splitter.split_documents(subtitles.split('\n\n'))
+    vector_db = Chroma.from_documents(documents=subs, embedding=st.session_state.embeddings)
     retriever = vector_db.as_retriever()
     
     prompt = hub.pull("rlm/rag-prompt")
@@ -112,8 +107,7 @@ def process_pdf(uploaded_file):
         | StrOutputParser()
     )
     
-    os.unlink(tmp_file_path)
-    return rag_chain, len(docs)
+    return rag_chain, len(subs)
 
 # UI
 def main():
@@ -140,10 +134,15 @@ def main():
         st.rerun()
 
     # Upload PDF
-    uploaded_file = st.file_uploader("Upload file PDF", type="pdf")
-    if uploaded_file and st.button("Xử lý PDF"):
+    # uploaded_file = st.file_uploader("Upload file PDF", type="pdf")
+    youtube_url = st.text_input("Nhập URL video YouTube để lấy phụ đề:", placeholder="https://www.youtube.com/watch?v=...")
+    langs = st.multiselect(        "Chọn ngôn ngữ phụ đề (mặc định là Tiếng Việt và Tiếng Anh):",
+        options=["vi", "en"],
+        default=["vi", "en"]
+    )
+    if youtube_url and st.button("Xử lý video"):
         with st.spinner("Đang xử lý..."):
-            st.session_state.rag_chain, num_chunks = process_pdf(uploaded_file)
+            st.session_state.rag_chain, num_chunks = process_subtitle(youtube_url, langs)
             st.success(f"Hoàn thành! {num_chunks} chunks")
 
     # Q&A
