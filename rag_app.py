@@ -14,6 +14,9 @@ from langchain_core.runnables import RunnablePassthrough
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 from transformers import BitsAndBytesConfig
 
+import get_subtiltes.py
+from get_subtitles import get_subtitles
+
 # Session state initialization
 if 'rag_chain' not in st.session_state:
     st.session_state.rag_chain = None
